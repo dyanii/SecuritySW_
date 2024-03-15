@@ -1,5 +1,7 @@
-#include <gmpxx.h>
+//디피헬먼 클래스 구현하기 (2주차 강의자료)
+#include <string>
 #include <iostream>
+#include <gmpxx.h>
 
 using namespace std;
 
@@ -36,34 +38,25 @@ int main()
     mpz_class pubB;
     mpz_class KA;
     mpz_class KB;
-/* DH parameters for TLS (2,048‐bit group) ‐‐ RFC7919 */
 
     mpz_class p{"0xFFFFFFFFFFFFFFFFADF85458A2BB4A9AAFDC5620273D3CF1D8B9C583CE2D3695A9E13641146433FBCC939DCE249B3EF97D2FE363630C75D8F681B202AEC4617AD3DF1ED5D5FD65612433F51F5F066ED0856365553DED1AF3B557135E7F57C935984F0C70E0E68B77E2A689DAF3EFE8721DF158A136ADE73530ACCA4F483A797ABC0AB182B324FB61D108A94BB2C8E3FBB96ADAB760D7F4681D4F42A3DE394DF4AE56EDE76372BB190B07A7C8EE0A6D709E02FCE1CDF7E2ECC03404CD28342F619172FE9CE98583FF8E4F1232EEF28183C3FE3B1B4C6FAD733BB5FCBC2EC22005C58EF1837D1683B2C6F34A26C1B2EFFA886B423861285C97FFFFFFFFFFFFFFFF"};
     mpz_class g = 2;
-    //공개 파라미터 설정
 
     gmp_randstate_t state;
     gmp_randinit_mt(state);
 
-/* Generating public keys */
+    xA = urandomm(state, p); //얘가 개인키
+    pubA = powm(g, xA, p); //공개키를 만든거임
+    xB = urandomm(state, p);//얘도 마찬가지
+    pubB = powm(g, xB, p);
 
-/* Alice */
-    xA = urandomm(state, p); //앨리스의 개인키 생성
-    pubA = powm(g, xA, p); //공개키 계산
-/* Bob */
-    xB = urandomm(state, p); //밥의 개인키 생성
-    pubB = powm(g, xB, p); //공개키 계산
-//////////////////
-/* Generating K */
-////////////////// 아래는 공유하는 비밀키를 계산하는 거임
     KA = powm(pubB, xA, p);
     KB = powm(pubA, xB, p);
 
-    //비교 연산을 통한 검증!!
     if(cmp(KA, KB) == 0)
         cout << "Success!" << endl;
     else
         cout << "Failed!" << endl;
-    return 0;
 
+    return 0;
 }

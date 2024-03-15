@@ -1,15 +1,16 @@
 #include <iostream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
-int main(){
-    int arr1[]={0,1,2,3};
+int main()
+{
+    vector<string> msg{"Hello" ,"World", "C++"};
 
-    for(int i=0; i<4; i++){
-        cout << arr1[i] << '\n';
+    for(const string &word : msg)
+    {
+        cout << word << " ";
     }
-
-    for(int num : arr1){
-        cout << num << '\n';
-    }
+    cout << endl;
 }
